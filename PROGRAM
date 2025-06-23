@@ -1,0 +1,117 @@
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <Keypad.h>
+
+// WiFi credentials
+const char* ssid = "YOUR_SSID";
+const char* password = "YOUR_PASSWORD";
+
+// Google Script Web App URL (replace with your actual Google Script URL)
+const char* serverName = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
+// Voltage and current sensing pins
+#define VOLTAGE_PIN 34
+#define CURRENT_PIN 35
+
+// Constants for calculations (update as per your resistor values)
+const float VREF = 3.3;
+const int ADC_RESOLUTION = 4095;
+
+const float voltageDividerRatio = 5.7;  // Example: if 12V is scaled to ~2.1V
+const float shuntResistorValue = 0.1;   // in ohms
+
+// Keypad configuration
+const byte ROWS = 4; 
+const byte COLS = 5; 
+char keys[ROWS][COLS] = {
+  {'1','2','3','A','B'},
+  {'4','5','6','C','D'},
+  {'7','8','9','E','F'},
+  {'*','0','#','G','H'}
+};
+
+byte rowPins[ROWS] = {13, 12, 14, 27}; // Connect to the row pinouts of the keypad
+byte colPins[COLS] = {26, 25, 33, 32, 15}; // Connect to the column pinouts
+
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+String serialNumber = "";
+bool inputComplete = false;
+int pushButtonPin = 4;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(pushButtonPin, INPUT_PULLUP);
+
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to Wi-Fi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected to Wi-Fi");
+}
+
+void loop() {
+  char key = keypad.getKey();
+  
+  if (key) {
+    if (key == '#') {
+      inputComplete = true;
+      Serial.println("Serial Number Entered: " + serialNumber);
+    } else {
+      serialNumber += key;
+      Serial.print(key);
+    }
+  }
+
+  if (digitalRead(pushButtonPin) == LOW && inputComplete) {
+    float voltage = readVoltage();
+    float current = readCurrent();
+
+    Serial.println("Voltage: " + String(voltage, 2) + " V");
+    Serial.println("Current: " + String(current, 2) + " A");
+
+    sendDataToGoogleSheet(serialNumber, voltage, current);
+
+    // Reset input
+    serialNumber = "";
+    inputComplete = false;
+    delay(2000);
+  }
+}
+
+float readVoltage() {
+  int analogValue = analogRead(VOLTAGE_PIN);
+  float voltage = (analogValue * VREF / ADC_RESOLUTION) * voltageDividerRatio;
+  return voltage;
+}
+
+float readCurrent() {
+  int analogValue = analogRead(CURRENT_PIN);
+  float voltageAcrossShunt = analogValue * VREF / ADC_RESOLUTION;
+  float current = voltageAcrossShunt / shuntResistorValue;
+  return current;
+}
+
+void sendDataToGoogleSheet(String sn, float voltage, float current) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+
+    String url = serverName + "?serial=" + sn + "&voltage=" + String(voltage, 2) + "&current=" + String(current, 2);
+
+    http.begin(url);
+    int httpResponseCode = http.GET();
+
+    if (httpResponseCode > 0) {
+      Serial.println("Data sent successfully");
+    } else {
+      Serial.print("Error sending data. HTTP response: ");
+      Serial.println(httpResponseCode);
+    }
+
+    http.end();
+  } else {
+    Serial.println("Wi-Fi not connected");
+  }
+}
