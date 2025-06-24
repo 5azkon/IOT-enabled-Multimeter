@@ -2,8 +2,7 @@
 
 An affordable and scalable smart multimeter using the ESP32 microcontroller that measures voltage and current, takes ECU serial input via a 4x5 matrix keypad, and uploads real-time data to **Google Sheets** using Wi-Fi.
 
-IMage Prototype HERE ----------
----
+![](https://github.com/5azkon/IOT-enabled-Multimeter/blob/main/PROTOTYPE/Prototype.jpg)
 
 ## 🛠️ Features
 
