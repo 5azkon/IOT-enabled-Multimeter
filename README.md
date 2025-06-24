@@ -86,3 +86,6 @@ Full video here 👇
 🧪 Suitable for lab measurements
 🛰️ Remote data acquisition in IoT/embedded systems
 🧰 Cost-effective alternative to commercial multimeters
+
+---------------
+## Social media:- (www.linkedin.com/in/mr-5azkon)
