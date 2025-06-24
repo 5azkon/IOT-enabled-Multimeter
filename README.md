@@ -70,7 +70,7 @@ An affordable and scalable smart multimeter using the ESP32 microcontroller that
 
 ---------
 ### 📽️ Project Demo
-
+Full video here 👇
 [![Watch on YouTube](https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 
 -----------
