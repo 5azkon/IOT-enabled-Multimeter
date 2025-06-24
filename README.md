@@ -61,17 +61,24 @@ An affordable and scalable smart multimeter using the ESP32 microcontroller that
 
 ## ⚙️ How It Works
 1.Technician enters the ECU serial number using the 4x5 matrix keypad.
+
 2.Presses the push button.
+
 3.ESP32 reads:
+
 4.Voltage via voltage divider
+
 5.Current via shunt resistor
+
 6.Converts analog values into readable electrical units.
+
 7.Sends data to Google Sheets via Wi-Fi + HTTP GET.
 
 ---------
 ### 📽️ Project Demo
 Full video here 👇
-[![Watch on YouTube](https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+
+[![Watch on YouTube](https://img.youtube.com/vi/urKTJmTIu4k/hqdefault.jpg)](https://www.youtube.com/shorts/urKTJmTIu4k)
 
 -----------
 ## 📌 Applications
