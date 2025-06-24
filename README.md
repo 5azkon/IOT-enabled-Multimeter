@@ -15,7 +15,7 @@ An affordable and scalable smart multimeter using the ESP32 microcontroller that
 
 ---
 ## 📸 Block Diagram
-
+![](https://github.com/5azkon/IOT-enabled-Multimeter/blob/main/DOCUMENTS/Block%20diagram.png)
 ---
 ## 🔋 Hardware Components
 
