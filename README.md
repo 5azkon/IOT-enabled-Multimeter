@@ -74,7 +74,7 @@ An affordable and scalable smart multimeter using the ESP32 microcontroller that
 
 7.Sends data to Google Sheets via Wi-Fi + HTTP GET.
 
-[Simulation] https://github.com/5azkon/IOT-enabled-Multimeter/blob/main/PROTOTYPE/Simulation.mp4
+![Simulation]
 ---------
 ### 📽️ Project Demo
 Full video here 👇
